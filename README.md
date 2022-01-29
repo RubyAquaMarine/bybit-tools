@@ -9,7 +9,7 @@
  - Place laddered/limit/market orders
  - Preview stop loss cost / target profit gains
  - Bulk cancel orders
- - Show current open position
+ - Show current open position (bug)
  - Risk management calculator
 
 Bybit API key parameters : 
@@ -26,29 +26,19 @@ npm run electron:build
 npm run electron:build:mac
 ```
 
-# 2022 
-fork me! Bybit!
-## AquaMarine 
+## AquaMarine Note Below
 M1 chip requires  
 - "electron": "^11.1.0"
 
 # Bugs
 the open positions api is probably calling the wrong endpoint ( old version)
 
-open position does not display after fixing api  
+# OpenPosition ???
+- api issues? url , parsing? 
 <open-position v-if="$bybitApi.openPosition && $ui.showOpenPosition"></open-position>
-
-this is missing 
 index.vue
 <script src="./OpenPosition.js"></script>
 
-
-# AquaMarine 
-idk what this is really. 
-https://vuetifyjs.com/en/components/icons/ 
-<v-icon large color="blue-grey darken-2">
-              mdi-call-split
-            </v-icon>
 
 
 
