@@ -1,7 +1,7 @@
-<v-app-bar app>
+<v-app-bar app style="background-color: #17191c;" >
   <v-app-bar-nav-icon @click.stop="$emit('toggleDrawer')"></v-app-bar-nav-icon>
   <v-toolbar-title class="text-uppercase">
-    <span class="font-weight-light">Layer Orders| </span>
+    <span class="font-weight-light">$$$</span>
   </v-toolbar-title>
   <v-select
       class="mt-6 ml-2 font-weight-light"
@@ -21,7 +21,7 @@
       mandatory
       color="primary"
   >
-    <v-btn v-for="symbol in $bybitApi.availableSymbols" small mb-3>
+    <v-btn v-for="symbol in $bybitApi.availableSymbols" small mb-3 style="background-color: #17191c;">
       {{symbol}}
     </v-btn>
   </v-btn-toggle>

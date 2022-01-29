@@ -1,139 +1,64 @@
-<v-layout column align-center>
-  <v-form
-      ref="form"
-      v-model="valid"
-      :lazy-validation="false"
-      autocomplete="off"
-  >
-    <div class="row justify-space-around align-center">
-      <div style="width: 75%;">
-        <v-text-field class="ma-0"
-                      height="25"
-                      v-model="form.higherPrice"
-                      :rules="formValidation.higherPriceRules"
-                      label="Higher Price"
-                      required
-        ></v-text-field>
-        <v-text-field class="ma-0"
-                      height="25"
-                      v-model="form.lowerPrice"
-                      :rules="formValidation.lowerPriceRules"
-                      label="Lower Price"
-                      required
-        ></v-text-field>
-      </div>
-      <v-btn
-          center
-          dark
-          @click="switchHighLow"
-          small
-      >
-        <v-icon>mdi-sync</v-icon>
-      </v-btn>
-    </div>
-    <v-text-field class="ma-0"
-                  height="25"
-                  v-model="form.contracts"
-                  :rules="formValidation.contractsRules"
-                  label="Quantity"
-                  required
-    ></v-text-field>
-    <v-text-field class="ma-0"
-                  height="25"
-                  v-model="form.orders"
-                  :rules="formValidation.ordersRules"
-                  label="Number of orders"
-                  required
-    ></v-text-field>
-    <v-text-field class="ma-0"
-                  height="25"
-                  v-model="form.takeProfit"
-                  :rules="formValidation.takeProfitRules"
-                  label="Take Profit"
-    ></v-text-field>
-    <v-text-field class="ma-0"
-                  height="25"
-                  v-model="form.stopLoss"
-                  :rules="formValidation.stopLossRules"
-                  label="Stop Loss"
-    ></v-text-field>
-    <v-select class="ma-0"
-              height="25"
-              v-model="form.scale"
-              :items="form.scaleItems"
-              :rules="[v => !!v || 'Scale is required']"
-              label="Scale"
-              required
-    ></v-select>
-    <v-text-field class="ma-0"
-                  height="25"
-                  v-model="form.coefficient"
-                  :rules="formValidation.coefficientRules"
-                  label="Scale Coefficient (Higher is stronger)"
-    ></v-text-field>
-    <v-select class="ma-0"
-              height="25"
-              v-model="form.time_in_force"
-              :items="form.timeInForceItems"
-              item-text="text"
-              item-value="value"
-              :rules="[v => !!v || 'Time In Force is required']"
-              label="Time In Force"
-              required
-    ></v-select>
-    <v-layout row wrap justify-space-around class="ma-0 pa-0" style="height: 44px">
-      <v-switch v-model="form.reduceOnly" class="ma-0" color="primary" label="Reduce-only"></v-switch>
-    </v-layout>
-    <v-layout wrap align-center column>
-      <v-layout style="width: 100%" justify-space-between mb-2>
-        <v-btn
-            :disabled="!valid"
-            color="success"
-            class="ml-1 mr-1 mb-1"
-            @click="previewBuy"
-        >
-          Preview<br>buy entries
-        </v-btn>
-        <v-btn
-            color="darkgrey"
-            class="ml-1 mr-1 mb-1"
-            @click="reset"
-        >
-          Reset
-        </v-btn>
-        
-        <v-btn
-            :disabled="!valid"
-            color="error"
-            class="ml-1 mr-1 mb-1"
-            
-            @click="previewSell"
-        >
-          Preview<br>sell entries
-        </v-btn>
+<v-layout column align-left>
+  <v-row>
+    <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
+      <v-form ref="form" v-model="valid" :lazy-validation="false" autocomplete="off">
+        <div class="row justify-space-around align-center">
+          <div style="width: 75%;">
+            <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
+              label="Higher Price" required></v-text-field>
+            <v-text-field class="ma-0" height="25" v-model="form.lowerPrice" :rules="formValidation.lowerPriceRules"
+              label="Lower Price" required></v-text-field>
+          </div>
+          <v-btn center dark @click="switchHighLow" small>
+            <v-icon>mdi-sync</v-icon>
+          </v-btn>
+        </div>
+      </v-form>
+    </v-col>
+    <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
+      <v-form ref="form" v-model="valid" :lazy-validation="false" autocomplete="off">
+        <v-text-field class="ma-0" height="25" v-model="form.takeProfit" :rules="formValidation.takeProfitRules"
+          label="Take Profit"></v-text-field>
+        <v-text-field class="ma-0" height="25" v-model="form.stopLoss" :rules="formValidation.stopLossRules"
+          label="Stop Loss"></v-text-field>
+        <v-select class="ma-0" height="25" v-model="form.scale" :items="form.scaleItems"
+          :rules="[v => !!v || 'Scale is required']" label="Scale" required></v-select>
+
+        <v-text-field class="ma-0" height="25" v-model="form.coefficient" :rules="formValidation.coefficientRules"
+          label="Scale Coefficient (Higher is stronger)"></v-text-field>
+      </v-form>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
+      <v-form ref="form" v-model="valid" :lazy-validation="false" autocomplete="off">
+        <v-text-field class="ma-0" height="25" v-model="form.contracts" :rules="formValidation.contractsRules"
+          label="Quantity" required></v-text-field>
+        <v-text-field class="ma-0" height="25" v-model="form.orders" :rules="formValidation.ordersRules"
+          label="Number of orders" required></v-text-field>
+        <v-select class="ma-0" height="25" v-model="form.time_in_force" :items="form.timeInForceItems" item-text="text"
+          item-value="value" :rules="[v => !!v || 'Time In Force is required']" label="Time In Force" required>
+        </v-select>
+      </v-form>
+    </v-col>
+    <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
+
+      <v-layout justify-space-between>
+
+        <div class="d-flex flex-column align-center">
+          <v-switch v-model="form.reduceOnly" class="ma-0" color="primary" label="Reduce-only (close position)">
+          </v-switch>
+          <v-btn :disabled="!valid" color="success" class="ma-1 mt-2" @click="buy">
+            Buy / Long
+          </v-btn>
+          <v-btn color="darkgrey" class="ma-1 mt-2" @click="reset">
+            Reset
+          </v-btn>
+          <v-btn :disabled="!valid" color="error" class="ma-1 mt-2" @click="sell">
+            Sell / Short
+          </v-btn>
+        </div>
       </v-layout>
-      
-      <preview-orders v-if="preview.length > 0" :orders="preview" @close="preview = []"></preview-orders>
-      
-      <v-layout style="width: 100%" justify-space-between>
-        <v-btn
-            :disabled="!valid"
-            color="success"
-            class="ma-1 mt-2"
-            @click="buy"
-        >
-          Buy / Long
-        </v-btn>
-        
-        <v-btn
-            :disabled="!valid"
-            color="error"
-            class="ma-1 mt-2"
-            @click="sell"
-        >
-          Sell / Short
-        </v-btn>
-      </v-layout>
-    </v-layout>
-  </v-form>
+    </v-col>
+  </v-row>
 </v-layout>

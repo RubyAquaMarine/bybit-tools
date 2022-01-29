@@ -30,24 +30,25 @@
             xs="12"
         >
           <div class="row justify-center">
-            <v-btn-toggle
+            <v-btn-toggle style="background-color: #17191c;"
                 v-model="orderTypeId"
                 mandatory
                 class="mb-2"
                 color="primary"
             >
-              <v-btn small>
+              <v-btn small style="background-color: #17191c;">
                 Ladder
               </v-btn>
-              <v-btn small>
+              <v-btn small style="background-color: #17191c;">
                 Limit
               </v-btn>
-              <v-btn small>
+              <v-btn small style="background-color: #17191c;">
                 Market
               </v-btn>
+              <v-btn small style="background-color: #17191c;">
+                Algo
+              </v-btn>
             </v-btn-toggle>
-            <v-switch v-model="$ui.showRiskManagementPane" dense hide-details class="risk ma-2 mt-0" color="primary"
-                      label="Risk Pane"></v-switch>
           </div>
           
           <ladder-orders-form v-show="orderTypeId === 0"
@@ -62,21 +63,15 @@
                              @order="order = $event"
                              :key="$bybitApi.currentSymbol + 2"
                              :active="orderTypeId === 2"></market-order-form>
-        </v-col>
-        <v-col v-show="$ui.showRiskManagementPane"
-               cols="12"
-               :xl="$ui.showTvChart && !expandTv ? 3 : 6"
-               lg="6"
-               md="6"
-               sm="12"
-               xs="12"
-        >
-          <risk-management-pane :order="order" :key="orderTypeId"></risk-management-pane>
+          <algo-order-form v-show="orderTypeId === 3"
+                             @order="order = $event"
+                             :key="$bybitApi.currentSymbol + 3"
+                             :active="orderTypeId === 3"></algo-order-form>
         </v-col>
       </v-row>
       <open-orders-list></open-orders-list>
       
-      <notifications position="top right" :duration="8000"/>
+      <notifications position="top right" :duration="500"/>
     </v-layout>
   </v-container>
 </v-content>

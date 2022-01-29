@@ -209,10 +209,11 @@ export default {
             if (res.data.ret_msg === 'ok') {
               // console.log(res.data.result.filter(pos => pos.symbol === this.currentSymbol && pos.size > 0)) ;
               // console.log(res.data) ;
+              // JAN 2022 "result[].data.symbol"
               this.walletBalance = res.data.result.filter(
-                  pos => pos.symbol === this.currentSymbol)[0].wallet_balance;
+                  pos => pos.data.symbol === this.currentSymbol)[0].data.wallet_balance;
               this.openPosition = res.data.result.filter(
-                  pos => pos.symbol === this.currentSymbol && pos.size > 0)[0];
+                  pos => pos.data.symbol === this.currentSymbol && pos.data.size > 0)[0].data;
             } else {
               console.error(res);
               this.$notify({

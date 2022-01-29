@@ -31,10 +31,11 @@
     </div>
   </v-layout>
   
-  <v-data-table
+  <v-data-table 
       :headers="headers"
       :items="$bybitApi.openOrders"
       :items-per-page="10"
+      style="background-color: #17191c;" 
   >
     <template v-slot:item.cancel="{ item }">
       <v-btn small
