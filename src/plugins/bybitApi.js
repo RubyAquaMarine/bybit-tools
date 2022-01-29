@@ -80,7 +80,7 @@ export default {
           this.init();
         },
         async updateInstrumentDetails() {
-          let res = await axios.get(this.url + 'v2/public/symbols');
+          let res = await axios.get(this.url + 'v2/public/symbols');// jan 2022 ok
           this.availableSymbols = res.data.result.map(el => el.name);
           if (res.data.ret_msg === 'OK') {
             let symbolInfos = res.data.result.find(
@@ -169,7 +169,7 @@ export default {
             let options = {
               params: this.signData(data),
             };
-            let res = await axios.get(this.url + 'open-api/order/list',
+            let res = await axios.get(this.url + '/v2/private/order/list', // jan 2022 /v2/private/order/list
                 options);
             if (res.data.ret_msg === 'ok') {
               if (res.data.result.data) {
@@ -204,7 +204,7 @@ export default {
             let options = {
               params: this.signData(data),
             };
-            let res = await axios.get(this.url + 'position/list',
+            let res = await axios.get(this.url + '/v2/private/position/list',// jan 2022 /v2/private/position/list
                 options);
             if (res.data.ret_msg === 'ok') {
               // console.log(res.data.result.filter(pos => pos.symbol === this.currentSymbol && pos.size > 0)) ;
@@ -245,7 +245,7 @@ export default {
           };
           try {
             let res = await axios.post(
-                this.url + 'open-api/position/trading-stop',
+                this.url + '/v2/private/stop-order/create',///jan 2022
                 this.signData(data));
             console.log(res);
             if (res.data.ret_msg === 'ok') {
@@ -270,7 +270,7 @@ export default {
         },
         async placeOrder(data) {
           try {
-            let res = await axios.post(this.url + 'v2/private/order/create',
+            let res = await axios.post(this.url + 'v2/private/order/create',// jan 2022
                 this.signData(data));
             console.log(res);
             if (res.data.ret_msg === 'OK') {
@@ -299,7 +299,7 @@ export default {
               order_id: id,
               symbol: this.currentSymbol,
             };
-            let res = await axios.post(this.url + 'v2/private/order/cancel',
+            let res = await axios.post(this.url + 'v2/private/order/cancel',// jan 2022
                 this.signData(data));
             if (res.data.ret_msg === 'OK') {
               this.$notify({

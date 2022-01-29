@@ -1,13 +1,5 @@
 # bybit-tools
 
-Bybit-tools is not maintained anymore
-
-Get Bybit Pro [here](https://bybit-pro.com)
-
-![Bybit Pro](./screenshots/bybit-pro-screenshot.png)
-
-Desktop app to place scaled orders on bybit
-
 ![Preview](./screenshots/main_screen.png)
 
 ##### Features :
@@ -19,13 +11,6 @@ Desktop app to place scaled orders on bybit
  - Bulk cancel orders
  - Show current open position
  - Risk management calculator
-
-[Releases](https://github.com/TranceGeniK/bybit-tools/releases)
-
-[Overview and quick how-to by Crypto Ranger](https://www.youtube.com/watch?v=it4fIeX-Gc0)
-
-[Guide en français par Archer](https://www.youtube.com/watch?v=Bl6Q7FZ6iAk&feature=youtu.be)
-
 
 Bybit API key parameters : 
 
@@ -40,9 +25,14 @@ npm install
 npm run electron:build
 ```
 
-##### If you like this app and it's useful to you, please consider supporting my work
+# 2022 
+fork me! Bybit!
+## AquaMarine 
+M1 chip requires  
+- "electron": "^11.1.0"
 
-BTC Tip line : 1NkgAB4JmbTp7NFkWPVnpZiWJkgoxUkpks
+# Bugs
+the open positions api is probably calling the wrong endpoint ( old version)
 
-ETH Tip line : 0xedde349177388e3d979223ab6f0d9848ba4b08d8
+
 
