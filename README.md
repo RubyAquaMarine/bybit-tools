@@ -1,6 +1,6 @@
 # bybit-tools
 
-![Preview](./screenshots/main_screen1.png)
+![Preview](https://github.com/RubyAquaMarine/bybit-tools/blob/master/screenshots/main-screen1.png?raw=true)
 
 ##### Features :
 
