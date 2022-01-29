@@ -23,6 +23,7 @@ If you're getting `invalid request, please check your timestamp and recv_window 
 ```
 npm install
 npm run electron:build
+npm run electron:build:mac
 ```
 
 # 2022 
@@ -33,6 +34,13 @@ M1 chip requires
 
 # Bugs
 the open positions api is probably calling the wrong endpoint ( old version)
+
+open position does not display after fixing api  
+<open-position v-if="$bybitApi.openPosition && $ui.showOpenPosition"></open-position>
+
+this is missing 
+index.vue
+<script src="./OpenPosition.js"></script>
 
 
 

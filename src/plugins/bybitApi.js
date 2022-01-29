@@ -193,7 +193,7 @@ export default {
           if (this.positionInterval) {
             this.disablePositionInterval();
           }
-          this.positionInterval = setInterval(this.getPosition, 1100);
+          this.positionInterval = setInterval(this.getPosition, 30000);
         },
         disablePositionInterval() {
           clearInterval(this.positionInterval);
