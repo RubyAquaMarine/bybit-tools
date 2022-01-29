@@ -1,6 +1,6 @@
 # bybit-tools
 
-![Preview](./screenshots/main_screen.png)
+![Preview](./screenshots/main_screen1.png)
 
 ##### Features :
 
