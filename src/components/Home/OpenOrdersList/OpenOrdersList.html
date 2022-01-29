@@ -34,7 +34,7 @@
   <v-data-table 
       :headers="headers"
       :items="$bybitApi.openOrders"
-      :items-per-page="10"
+      :items-per-page="All"
       style="background-color: #17191c;" 
   >
     <template v-slot:item.cancel="{ item }">

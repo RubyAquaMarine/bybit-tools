@@ -2,17 +2,20 @@
   <v-row>
     <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
       <v-form ref="form" v-model="valid" :lazy-validation="false" autocomplete="off">
-        <div class="row justify-space-around align-center">
-          <div style="width: 75%;">
-            <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
-              label="Higher Price" required></v-text-field>
-            <v-text-field class="ma-0" height="25" v-model="form.lowerPrice" :rules="formValidation.lowerPriceRules"
-              label="Lower Price" required></v-text-field>
-          </div>
+        <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
+          label="Range Percent" required></v-text-field>
+        <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
+          label="Higher Price" required></v-text-field>
+        <v-text-field class="ma-0" height="25" v-model="form.lowerPrice" :rules="formValidation.lowerPriceRules"
+          label="Lower Price" required></v-text-field>
+        <v-layout justify-space-between>
           <v-btn center dark @click="switchHighLow" small>
-            <v-icon>mdi-sync</v-icon>
+            <v-icon large color="blue-grey darken-2">mdi-call-split</v-icon>
           </v-btn>
-        </div>
+          <v-btn center dark @click="switchHighLow" small>
+            <v-icon large color="blue-grey darken-2"> mdi-chart-timeline-variant</v-icon>
+          </v-btn>
+        </v-layout>
       </v-form>
     </v-col>
     <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
@@ -24,7 +27,7 @@
         <v-select class="ma-0" height="25" v-model="form.scale" :items="form.scaleItems"
           :rules="[v => !!v || 'Scale is required']" label="Scale" required></v-select>
 
-        <v-text-field class="ma-0" height="25" v-model="form.coefficient" :rules="formValidation.coefficientRules"
+        <v-text-field class="ma-0" heigÍht="25" v-model="form.coefficient" :rules="formValidation.coefficientRules"
           label="Scale Coefficient (Higher is stronger)"></v-text-field>
       </v-form>
     </v-col>
@@ -51,7 +54,7 @@
           <v-btn :disabled="!valid" color="success" class="ma-1 mt-2" @click="buy">
             Buy / Long
           </v-btn>
-          <v-btn color="darkgrey" class="ma-1 mt-2" @click="reset">
+          <v-btn color="cooler" class="ma-1 mt-2" @click="reset">
             Reset
           </v-btn>
           <v-btn :disabled="!valid" color="error" class="ma-1 mt-2" @click="sell">

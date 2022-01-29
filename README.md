@@ -43,4 +43,12 @@ index.vue
 <script src="./OpenPosition.js"></script>
 
 
+# AquaMarine 
+idk what this is really. 
+https://vuetifyjs.com/en/components/icons/ 
+<v-icon large color="blue-grey darken-2">
+              mdi-call-split
+            </v-icon>
+
+
 

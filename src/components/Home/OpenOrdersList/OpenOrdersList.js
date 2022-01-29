@@ -8,9 +8,9 @@ export default {
         {text: 'Side', value: 'side'},
         {text: 'Qty', value: 'qty'},
         {text: 'Price', value: 'price'},
-        {text: 'Type', value: 'order_type'},
-        {text: 'Time In Force', value: 'time_in_force'},
-        {text: 'Updated At', value: 'updated_at'},
+        {text: 'Order', value: 'order_type'},
+        {text: 'Type', value: 'time_in_force'},
+     //   {text: 'Updated At', value: 'updated_at'},
         {text: 'Cancel', value: 'cancel'},
       ]
     };

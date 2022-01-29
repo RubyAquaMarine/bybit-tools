@@ -18,9 +18,10 @@
     },
     created() {
       this.$vuetify.theme.dark = true;
-      this.$vuetify.theme.themes.dark.primary = '#eba51d';
-      this.$vuetify.theme.themes.dark.success = '#78b63f';
-      this.$vuetify.theme.themes.dark.error = '#e44b8f';
+      this.$vuetify.theme.themes.dark.primary = '#FFB119';
+      this.$vuetify.theme.themes.dark.success = '#22AE65';
+      this.$vuetify.theme.themes.dark.error = '#E14140';
+      this.$vuetify.theme.themes.dark.cooler = '#17191c';
     },
     data: () => ({
       drawer: false,
