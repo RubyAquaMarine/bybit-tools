@@ -39,6 +39,23 @@ the open positions api is probably calling the wrong endpoint ( old version)
 index.vue
 <script src="./OpenPosition.js"></script>
 
+# Tick size
+figure out rounding based on the currentTickSize  
+```
 
-
-
+      let round = 0;
+      let num = this.$bybitApi.currentTickSize;
+        var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+        if (!match) { round = 0; }
+        else{
+          round = Math.max(
+            0,
+            // Number of digits right of decimal point.
+            (match[1] ? match[1].length : 0)
+            // Adjust for scientific notation.
+            - (match[2] ? +match[2] : 0));
+        }
+      this.form.higherPrice = (price + range).toFixed(round);// update the values
+      this.form.lowerPrice = price.toFixed(round);// update the values
+    },
+```

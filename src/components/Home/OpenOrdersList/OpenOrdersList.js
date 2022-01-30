@@ -11,7 +11,7 @@ export default {
         {text: 'Order', value: 'order_type'},
         {text: 'Type', value: 'time_in_force'},
      //   {text: 'Updated At', value: 'updated_at'},
-        {text: 'Cancel', value: 'cancel'},
+        {text: 'Close', value: 'cancel'},
       ]
     };
   },

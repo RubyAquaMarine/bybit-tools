@@ -1,19 +1,19 @@
 <v-layout column align-left>
   <v-row>
-    <v-col cols="6" style="background-color: #17191c;" class="d-flex justify-center align-center">
+    <v-col cols="6" style="background-color: #181b1f;" class="d-flex justify-center align-center">
       <v-form ref="form" v-model="valid" :lazy-validation="false" autocomplete="off">
-        <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
+        <v-text-field class="ma-0" height="25" v-model="form.rangePercent" :rules="formValidation.rangePercentRules"
           label="Range Percent" required></v-text-field>
         <v-text-field class="ma-0" height="25" v-model="form.higherPrice" :rules="formValidation.higherPriceRules"
           label="Higher Price" required></v-text-field>
         <v-text-field class="ma-0" height="25" v-model="form.lowerPrice" :rules="formValidation.lowerPriceRules"
           label="Lower Price" required></v-text-field>
         <v-layout justify-space-between>
-          <v-btn center dark @click="switchHighLow" small>
-            <v-icon large color="blue-grey darken-2">mdi-call-split</v-icon>
+          <v-btn center dark @click="getAskHiLo" small>
+            <v-icon large color="error">mdi-call-split</v-icon>
           </v-btn>
-          <v-btn center dark @click="switchHighLow" small>
-            <v-icon large color="blue-grey darken-2"> mdi-chart-timeline-variant</v-icon>
+          <v-btn center dark @click="getBidHiLo" small>
+            <v-icon large color="success">mdi-call-split</v-icon>
           </v-btn>
         </v-layout>
       </v-form>

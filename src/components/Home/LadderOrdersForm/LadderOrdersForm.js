@@ -1,14 +1,15 @@
 import PreviewOrders from './PreviewOrders';
-import {ORDER_DISTRIBUTIONS} from './constants';
-import {generateOrders} from './scaledOrderGenerator';
+import { ORDER_DISTRIBUTIONS } from './constants';
+import { generateOrders } from './scaledOrderGenerator';
 
 export default {
   name: 'ladder-orders-form',
-  components: {PreviewOrders},
+  components: { PreviewOrders },
   props: ['active'],
   data: () => ({
     valid: true,
     form: {
+      rangePercent: '',
       higherPrice: '',
       lowerPrice: '',
       takeProfit: '',
@@ -47,53 +48,53 @@ export default {
     orders: [],
     liveOrders: [],
   }),
-  
+
   computed: {
-    formValidation: function() {
+    formValidation: function () {
       return {
         higherPriceRules: [
           v => !!v || 'Higher Price is required',
           v => v && !isNaN(v) || 'Higher Price must be an number',
           v => v && (Number(v + 'e4') %
-              Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-              'Higher Price must be a multiple of ' +
-              this.$bybitApi.currentTickSize,
+            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+            'Higher Price must be a multiple of ' +
+            this.$bybitApi.currentTickSize,
         ],
         lowerPriceRules: [
           v => !!v || 'Lower Price is required',
           v => v && !isNaN(v) || 'Lower Price must be an number',
           v => v && (Number(v + 'e4') %
-              Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-              'Lower Price must be a multiple of ' +
-              this.$bybitApi.currentTickSize,
+            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+            'Lower Price must be a multiple of ' +
+            this.$bybitApi.currentTickSize,
         ],
         takeProfitRules: [
           v => !v || v && !isNaN(v) || 'Take Profit must be an number',
           v => !v || v && (Number(v + 'e4') %
-              Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-              'Take Profit must be a multiple of ' +
-              this.$bybitApi.currentTickSize,
+            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+            'Take Profit must be a multiple of ' +
+            this.$bybitApi.currentTickSize,
         ],
         stopLossRules: [
           v => !v || v && !isNaN(v) || 'Stop Loss must be an number',
           v => !v || v && (Number(v + 'e4') %
-              Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-              'Stop Loss must be a multiple of ' +
-              this.$bybitApi.currentTickSize,
+            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+            'Stop Loss must be a multiple of ' +
+            this.$bybitApi.currentTickSize,
         ],
         contractsRules: [
           v => !!v || 'Quantity is required',
           v => v && !isNaN(v) || 'Quantity must be an number',
           v => v && (Number(v + 'e4') %
-              Number(this.$bybitApi.currentQtyStep + 'e4') === 0) ||
-              'Quantity must be a multiple of ' +
-              this.$bybitApi.currentQtyStep,
+            Number(this.$bybitApi.currentQtyStep + 'e4') === 0) ||
+            'Quantity must be a multiple of ' +
+            this.$bybitApi.currentQtyStep,
         ],
         ordersRules: [
           v => !!v || 'Number of orders is required',
           v => v && !isNaN(v) || 'Number of orders must be an number',
           v => v && !Number.isInteger(v) ||
-              'Number of orders must be an integer',
+            'Number of orders must be an integer',
           v => v && v >= 2 || 'Number of orders must be above 2',
         ],
         coefficientRules: [
@@ -102,14 +103,31 @@ export default {
           v => v && !Number.isInteger(v) || 'Coefficient must be an integer',
           v => v && parseInt(v) >= 1 || 'Coefficient must be greater than 1',
         ],
+        rangePercentRules: [
+          v => !!v || 'RangePercent is required',
+          v => v && !isNaN(v) || 'RangePercent must be an number',
+          v => v && parseInt(v) >= 0 || 'Coefficient must be greater than 0',
+          v => v && parseInt(v) <= 100 || 'Coefficient must be less than 100',
+        ],
       };
     },
   },
   methods: {
-    switchHighLow() {
-      let temp = this.form.higherPrice;
-      this.form.higherPrice = this.form.lowerPrice;
-      this.form.lowerPrice = temp;
+    getAskHiLo() {
+      // get price for the Ask Layering
+      const price = Number(this.$bybitApi.lastPrice);
+      const perc = Number(this.form.rangePercent) * 0.01;
+      const range = perc * price;// what is the range in actual asset value unit
+      this.form.higherPrice = Number(price + range);// update the values
+      this.form.lowerPrice = Number(price);// update the values
+    },
+    getBidHiLo() {
+      // get price for the Bid Layering
+      const price = Number(this.$bybitApi.lastPrice);
+      const perc = Number(this.form.rangePercent) * 0.01;
+      const range = perc * price;// what is the range in actual asset value unit
+      this.form.higherPrice = Number(price);// update the values
+      this.form.lowerPrice = Number(price - range);// update the values
     },
     previewSell() {
       if (this.$refs.form.validate()) {
@@ -143,7 +161,7 @@ export default {
         this.placeOrders();
       }
     },
-    average: function() {
+    average: function () {
       let totalAll = 0;
       this.totalQty = 0;
       for (let i = 0; i < this.liveOrders.length; i++) {
@@ -159,10 +177,10 @@ export default {
         priceLower: parseFloat(this.form.lowerPrice),
         priceUpper: parseFloat(this.form.higherPrice),
         distribution: side === 'Sell' ? this.form.scale : (this.form.scale ===
-        ORDER_DISTRIBUTIONS.FLAT.label ? ORDER_DISTRIBUTIONS.FLAT.label :
-            (this.form.scale === ORDER_DISTRIBUTIONS.INCREASING.label
-                ? ORDER_DISTRIBUTIONS.DECREASING.label
-                : ORDER_DISTRIBUTIONS.INCREASING.label)),
+          ORDER_DISTRIBUTIONS.FLAT.label ? ORDER_DISTRIBUTIONS.FLAT.label :
+          (this.form.scale === ORDER_DISTRIBUTIONS.INCREASING.label
+            ? ORDER_DISTRIBUTIONS.DECREASING.label
+            : ORDER_DISTRIBUTIONS.INCREASING.label)),
         tickSize: this.$bybitApi.currentTickSize,
         coefficient: parseInt(this.form.coefficient),
       });
@@ -220,18 +238,19 @@ export default {
     },
   },
   mounted() {
-  
+
   },
   watch: {
     form: {
       deep: true,
-      handler: async function() {
+      handler: async function () {
         if (this.active
-            && this.form.higherPrice
-            && this.form.lowerPrice
-            && this.form.orders
-            && this.form.stopLoss
-            && this.form.takeProfit) {
+          && this.form.rangePercent
+          && this.form.higherPrice
+          && this.form.lowerPrice
+          && this.form.orders
+          && this.form.stopLoss
+          && this.form.takeProfit) {
           await this.$nextTick();
           if (this.$refs.form.validate()) {
             let orders = [];
