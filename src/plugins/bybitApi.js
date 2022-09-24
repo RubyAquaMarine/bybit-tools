@@ -14,7 +14,7 @@ export default {
         },
         accounts: [],
         autoconnect: true,
-        
+
         url: 'https://api.bybit.com/',
         wsUrl: 'wss://stream.bybit.com/realtime',
         ws: null,
@@ -42,7 +42,7 @@ export default {
       methods: {
         init() {
           if (this.account.apiKey && this.account.apiSecret &&
-              this.autoconnect) {
+            this.autoconnect) {
             if (this.account.isTestnet) {
               this.url = this.urls.testnet.url;
               this.wsUrl = this.urls.testnet.wsUrl;
@@ -66,6 +66,14 @@ export default {
           this.openOrders = [];
           this.openPosition = null;
           this.currentSymbol = symbol;
+
+          this.$notify({
+            text: "Symbol Changed to : " + symbol,
+            type: 'success',
+          });
+
+
+
           this.init();
         },
         changeAccount() {
@@ -81,63 +89,69 @@ export default {
         },
         async updateInstrumentDetails() {
           let res = await axios.get(this.url + 'v2/public/symbols');// jan 2022 ok
-          this.availableSymbols = res.data.result.map(el => el.name);
+          
           if (res.data.ret_msg === 'OK') {
+            // probably not ideal to map without checking the ret_msg
+            this.availableSymbols = res.data.result.map(el => el.name);//moved  
+            
             let symbolInfos = res.data.result.find(
-                el => el.name === this.currentSymbol);
-            this.currentTickSize = parseFloat(
-                symbolInfos.price_filter.tick_size);
-            this.currentQtyStep = parseFloat(
-                symbolInfos.lot_size_filter.qty_step);
+              el => el.name === this.currentSymbol
+            );
+
+            if(symbolInfos !== undefined){
+              this.currentTickSize = parseFloat(symbolInfos.price_filter.tick_size);
+              this.currentQtyStep = parseFloat(symbolInfos.lot_size_filter.qty_step);
+            }
           }
+
         },
         initWs() {
           this.ws = new ReconnectingWebSocket(`${this.wsUrl}`);
-          
+
           this.ws.onopen = (e) => {
             let expires = Date.now() + 1500;
-            
+
             let signature = CryptoJS.HmacSHA256('GET/realtime' + expires,
-                this.account.apiSecret).
-                toString();
-            
+              this.account.apiSecret).
+              toString();
+
             this.ws.send(
-                JSON.stringify({
-                  'op': 'auth',
-                  'args': [this.account.apiKey, expires, signature],
-                }));
-            
+              JSON.stringify({
+                'op': 'auth',
+                'args': [this.account.apiKey, expires, signature],
+              }));
+
             setTimeout(() => {
               this.ws.send('{"op":"subscribe","args":["order"]}');
               // this.ws.send('{"op":"subscribe","args":["position"]}');
             }, 500);
             this.ws.send(
-                '{"op":"subscribe","args":["instrument_info.100ms.' +
-                this.currentSymbol + '"]}');
+              '{"op":"subscribe","args":["instrument_info.100ms.' +
+              this.currentSymbol + '"]}');
           };
-          
+
           this.ws.onmessage = (e) => {
             let data = JSON.parse(e.data);
             switch (data.topic) {
-              case 'instrument_info.100ms.' + this.currentSymbol + '' :
+              case 'instrument_info.100ms.' + this.currentSymbol + '':
                 this.setPrice(data);
                 break;
-              case 'order' :
+              case 'order':
                 for (let i = 0; i < data.data.length; i++) {
                   if (data.data[i].symbol === this.currentSymbol) {
                     if (data.data[i].order_status === 'Cancelled'
-                        || data.data[i].order_status === 'Rejected'
-                        || data.data[i].order_status === 'Filled') {
+                      || data.data[i].order_status === 'Rejected'
+                      || data.data[i].order_status === 'Filled') {
                       this.removeOrder(data.data[i]);
                     }
                     if (data.data[i].order_status === 'New'
-                        || data.data[i].order_status === 'PartiallyFilled') {
+                      || data.data[i].order_status === 'PartiallyFilled') {
                       this.addOrder(data.data[i]);
                     }
                   }
                 }
                 break;
-              default :
+              default:
                 console.log(data);
                 break;
             }
@@ -151,11 +165,11 @@ export default {
           if (data.type === 'delta') {
             if (data.data.update[0].last_price_e4) {
               this.lastPrice = Number(
-                  data.data.update[0].last_price_e4 + 'e-4').toFixed(2);
+                data.data.update[0].last_price_e4 + 'e-4').toFixed(2);
             }
             if (data.data.update[0].mark_price_e4) {
               this.markPrice = Number(
-                  data.data.update[0].mark_price_e4 + 'e-4').toFixed(2);
+                data.data.update[0].mark_price_e4 + 'e-4').toFixed(2);
             }
           }
         },
@@ -170,7 +184,7 @@ export default {
               params: this.signData(data),
             };
             let res = await axios.get(this.url + '/v2/private/order/list', // jan 2022 /v2/private/order/list
-                options);
+              options);
             if (res.data.ret_msg === 'ok') {
               if (res.data.result.data) {
                 this.openOrders = this.openOrders.concat(res.data.result.data);
@@ -205,22 +219,22 @@ export default {
               params: this.signData(data),
             };
             let res = await axios.get(this.url + '/v2/private/position/list',// jan 2022 /v2/private/position/list
-                options);
+              options);
             if (res.data.ret_msg === 'ok') {
               // console.log(res.data.result.filter(pos => pos.symbol === this.currentSymbol && pos.size > 0)) ;
               // console.log(res.data) ;
               // JAN 2022 "result[].data.symbol"
               this.walletBalance = res.data.result.filter(
-                  pos => pos.data.symbol === this.currentSymbol)[0].data.wallet_balance;
+                pos => pos.data.symbol === this.currentSymbol)[0].data.wallet_balance;
               this.openPosition = res.data.result.filter(
-                  pos => pos.data.symbol === this.currentSymbol && pos.data.size > 0)[0].data;
+                pos => pos.data.symbol === this.currentSymbol && pos.data.size > 0)[0].data;
             } else {
               console.error(res);
               this.$notify({
                 text: res.data.ret_msg +
-                    ((res.data.ret_code === 10002) ? '<br> server_time : ' +
-                        res.data.time_now + '<br> request_time : ' +
-                        data.timestamp : ''),
+                  ((res.data.ret_code === 10002) ? '<br> server_time : ' +
+                    res.data.time_now + '<br> request_time : ' +
+                    data.timestamp : ''),
                 type: 'error',
               });
             }
@@ -246,8 +260,8 @@ export default {
           };
           try {
             let res = await axios.post(
-                this.url + '/v2/private/stop-order/create',///jan 2022
-                this.signData(data));
+              this.url + '/v2/private/stop-order/create',///jan 2022
+              this.signData(data));
             console.log(res);
             if (res.data.ret_msg === 'ok') {
               this.$notify({
@@ -260,7 +274,7 @@ export default {
                 type: 'error',
               });
             }
-            
+
           } catch (e) {
             console.error(e);
             this.$notify({
@@ -272,7 +286,7 @@ export default {
         async placeOrder(data) {
           try {
             let res = await axios.post(this.url + 'v2/private/order/create',// jan 2022
-                this.signData(data));
+              this.signData(data));
             console.log(res);
             if (res.data.ret_msg === 'OK') {
               this.$notify({
@@ -285,7 +299,7 @@ export default {
                 type: 'error',
               });
             }
-            
+
           } catch (e) {
             console.error(e);
             this.$notify({
@@ -301,7 +315,7 @@ export default {
               symbol: this.currentSymbol,
             };
             let res = await axios.post(this.url + 'v2/private/order/cancel',// jan 2022
-                this.signData(data));
+              this.signData(data));
             if (res.data.ret_msg === 'OK') {
               this.$notify({
                 text: 'Order cancelled',
@@ -323,7 +337,7 @@ export default {
               symbol: this.currentSymbol,
             };
             let res = await axios.post(this.url + 'v2/private/order/cancelAll',
-                this.signData(data));
+              this.signData(data));
             if (res.data.ret_msg === 'OK') {
               this.$notify({
                 text: 'Orders cancelled',
@@ -381,13 +395,13 @@ export default {
           data.recv_window = 25000;
           let dataString = this.objToString(this.sortObject(data));
           data.sign = CryptoJS.HmacSHA256(dataString, this.account.apiSecret).
-              toString();
+            toString();
           return this.sortObject(data);
         },
         sortObject(o) {
           let sorted = {},
-              key,
-              a = [];
+            key,
+            a = [];
           for (key in o) {
             if (o.hasOwnProperty(key)) {
               a.push(key);
@@ -400,7 +414,7 @@ export default {
           return sorted;
         },
         objToString(data) {
-          return Object.keys(data).map(function(k) {
+          return Object.keys(data).map(function (k) {
             return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
           }).join('&');
         },

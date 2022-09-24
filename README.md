@@ -41,6 +41,9 @@ index.vue
 
 # Tick size
 figure out rounding based on the currentTickSize  
+
+- formValidation.lowerPriceRules 
+
 ```
 
       let round = 0;
@@ -59,3 +62,6 @@ figure out rounding based on the currentTickSize
       this.form.lowerPrice = price.toFixed(round);// update the values
     },
 ```
+
+# v-select (currectSymbol)
+- [ ] allow user to select any of the symbols : BTCUSD etc done,  Need to add new api for the BTCUSDt pairing
