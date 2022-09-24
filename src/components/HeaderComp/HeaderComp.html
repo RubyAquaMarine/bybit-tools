@@ -7,7 +7,7 @@
     v-model="$bybitApi.account" item-text="label" item-value="value" label="Account" single-line return-object
     @change="$bybitApi.changeAccount"></v-select>
   <v-spacer></v-spacer>
-  <v-select class="mt-6 ml-2 font-weight-light" style="max-width: 110px;" v-bind:items="$bybitApi.availableSymbols"
+  <v-select class="mt-6 ml-2 font-weight-light" style="max-width: 130px;" v-bind:items="$bybitApi.availableSymbols"
     v-model="symbolIndexA" item-text="label" item-value="value" label="Select Market"
     @change="$bybitApi.changeSymbol(symbolIndexA)"></v-select>
   <v-spacer></v-spacer>
@@ -18,4 +18,10 @@
   <span v-if="markPriceDecreasing" class="error--text">Mark : <strong>{{$bybitApi.markPrice}}</strong></span>
   <span v-else-if="markPriceIncreasing" class="success--text">Mark : <strong>{{$bybitApi.markPrice}}</strong></span>
   <span v-else>Mark : <strong>{{$bybitApi.markPrice}}</strong></span>
+  &nbsp|&nbsp
+  <span>Tick : {{$bybitApi.currentTickSize}} </span>
+  &nbsp|&nbsp
+  <span>Lotsize: {{$bybitApi.currentQtyStep}}</span> 
+
+
 </v-app-bar>

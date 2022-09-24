@@ -69,7 +69,7 @@ export default {
 
           this.$notify({
             text: "Symbol Changed to : " + symbol,
-            type: 'error',
+            type: 'success',
           });
 
 
