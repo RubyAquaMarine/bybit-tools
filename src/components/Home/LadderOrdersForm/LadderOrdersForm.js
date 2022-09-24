@@ -55,18 +55,18 @@ export default {
         higherPriceRules: [
           v => !!v || 'Higher Price is required',
           v => v && !isNaN(v) || 'Higher Price must be an number',
-          v => v && (Number(v + 'e4') %
-            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-            'Higher Price must be a multiple of ' +
-            this.$bybitApi.currentTickSize,
+        //  v => v && (Number(v + 'e4') %
+        //    Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+       //     'Higher Price must be a multiple of ' +
+       //     this.$bybitApi.currentTickSize,
         ],
         lowerPriceRules: [
           v => !!v || 'Lower Price is required',
           v => v && !isNaN(v) || 'Lower Price must be an number',
-          v => v && (Number(v + 'e4') %
-            Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
-            'Lower Price must be a multiple of ' +
-            this.$bybitApi.currentTickSize,
+        //  v => v && (Number(v + 'e4') %
+        //    Number(this.$bybitApi.currentTickSize + 'e4') === 0) ||
+        //    'Lower Price must be a multiple of ' +
+        //    this.$bybitApi.currentTickSize,
         ],
         takeProfitRules: [
           v => !v || v && !isNaN(v) || 'Take Profit must be an number',

@@ -1,15 +1,30 @@
-<v-app-bar app style="background-color: #17191c;">
+<v-app-bar app style="background-color: #17191c;" >
   <v-app-bar-nav-icon @click.stop="$emit('toggleDrawer')"></v-app-bar-nav-icon>
   <v-toolbar-title class="text-uppercase">
     <span class="font-weight-light">$$$</span>
   </v-toolbar-title>
-  <v-select class="mt-6 ml-2 font-weight-light" style="max-width: 110px;" :items="$bybitApi.accounts"
-    v-model="$bybitApi.account" item-text="label" item-value="value" label="Account" single-line return-object
-    @change="$bybitApi.changeAccount"></v-select>
+  <v-select
+      class="mt-6 ml-2 font-weight-light"
+      style="max-width: 110px;"
+      :items="$bybitApi.accounts"
+      v-model="$bybitApi.account"
+      item-text="label"
+      item-value="value"
+      label="Account"
+      single-line
+      return-object
+      @change="$bybitApi.changeAccount"
+  ></v-select>
   <v-spacer></v-spacer>
-  <v-select class="mt-6 ml-2 font-weight-light" style="max-width: 110px;" v-bind:items="$bybitApi.availableSymbols"
-    v-model="symbolIndexA" item-text="label" item-value="value" label="Select Market"
-    @change="$bybitApi.changeSymbol(symbolIndexA)"></v-select>
+  <v-btn-toggle
+      v-model="symbolIndex"
+      mandatory
+      color="primary"
+  >
+    <v-btn v-for="symbol in $bybitApi.availableSymbols" small mb-3 style="background-color: #17191c;">
+      {{symbol}}
+    </v-btn>
+  </v-btn-toggle>
   <v-spacer></v-spacer>
   <span v-if="lastPriceDecreasing" class="error--text">Last : <strong>{{$bybitApi.lastPrice}}</strong> </span>
   <span v-else-if="lastPriceIncreasing" class="success--text">Last : <strong>{{$bybitApi.lastPrice}}</strong> </span>
@@ -19,3 +34,4 @@
   <span v-else-if="markPriceIncreasing" class="success--text">Mark : <strong>{{$bybitApi.markPrice}}</strong></span>
   <span v-else>Mark : <strong>{{$bybitApi.markPrice}}</strong></span>
 </v-app-bar>
+
