@@ -26,20 +26,22 @@ npm run electron:build
 npm run electron:build:mac
 ```
 
-## AquaMarine Note Below
+# AquaMarine Note Below
 M1 chip requires  
 - "electron": "^11.1.0"
+- [x] allow user to select any of the symbols : BTCUSD etc done,  
+- [ ] Need to add new api for the BTCUSDt pairing
 
-# Bugs
+## Bugs
 the open positions api is probably calling the wrong endpoint ( old version)
 
-# OpenPosition ???
+### OpenPosition ???
 - api issues? url , parsing? 
 <open-position v-if="$bybitApi.openPosition && $ui.showOpenPosition"></open-position>
 index.vue
 <script src="./OpenPosition.js"></script>
 
-# Tick size
+### Tick size
 figure out rounding based on the currentTickSize  
 
 - formValidation.lowerPriceRules 
@@ -62,6 +64,3 @@ figure out rounding based on the currentTickSize
       this.form.lowerPrice = price.toFixed(round);// update the values
     },
 ```
-
-# v-select (currectSymbol)
-- [ ] allow user to select any of the symbols : BTCUSD etc done,  Need to add new api for the BTCUSDt pairing

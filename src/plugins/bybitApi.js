@@ -68,7 +68,7 @@ export default {
           this.currentSymbol = symbol;
 
           this.$notify({
-            text: "Symbol Changed to : " + symbol,
+            text: "Symbol changed to : " + symbol,
             type: 'success',
           });
 
